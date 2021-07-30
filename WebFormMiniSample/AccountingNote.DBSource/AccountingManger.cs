@@ -53,38 +53,23 @@ namespace AccountingNote.DBSource
                     FROM Accounting
                     WHERE id = @id AND UserID = @userID";
 
-            using (SqlConnection conn = new SqlConnection(connStr))
+            List<SqlParameter> list = new List<SqlParameter>();
+            list.Add(new SqlParameter("@id", id));
+            list.Add(new SqlParameter("@userID", userID));
+
+            try
             {
-                using (SqlCommand comm = new SqlCommand(dbCommand, conn))
-                {
-                    comm.Parameters.AddWithValue("@id", id);
-                    comm.Parameters.AddWithValue("@userID", userID);
-
-                    try
-                    {
-                        conn.Open();
-                        var reader = comm.ExecuteReader();
-
-                        DataTable dt = new DataTable();
-                        dt.Load(reader);
-
-                        if (dt.Rows.Count == 0)
-                            return null;
-
-                        return dt.Rows[0];
-
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.WriteLog(ex);
-                        return null;
-                    }
-                }
+                return DBHelper.ReadDataRow(connStr, dbCommand, list);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+                return null;
             }
         }
 
         /// <summary>
-        ///  建立流水帳
+        /// 建立流水帳
         /// </summary>
         /// <param name="userID"></param>
         /// <param name="caption"></param>
@@ -150,7 +135,7 @@ namespace AccountingNote.DBSource
 
 
         /// <summary>
-        ///  建立流水帳
+        /// 上傳流水帳
         /// </summary>
         /// <param name="ID"></param>
         /// <param name="userID"></param>
@@ -215,7 +200,7 @@ namespace AccountingNote.DBSource
         }
 
         /// <summary>
-        ///  建立流水帳
+        /// 刪除流水帳
         /// </summary>
         /// <param name="ID"></param>
 
