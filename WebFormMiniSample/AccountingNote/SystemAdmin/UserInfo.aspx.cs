@@ -1,4 +1,5 @@
-﻿using AccountingNote.DBSource;
+﻿using AccountingNote.Auth;
+using AccountingNote.DBSource;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,26 +14,32 @@ namespace AccountingNote.SystemAdmin
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(this.Session["UserLoginInfo"] == null)
+            if(!this.IsPostBack)
+            // 可能是按鈕跳回本頁，所以要判斷 postback
             {
-                Response.Redirect("/Login.aspx");
-                return;
+                if (!AuthManger.IsLogined())
+                // 如果尚未登入，導至登入頁
+                {
+                    Response.Redirect("/Login.aspx");
+                    return;
+                }
+
+                string account = this.Session["UserLoginInfo"] as string;
+
+                DataRow dr = UserInfoManger.GetUserInfoByAccount(account);
+
+                if (dr == null)
+                // 如果帳號不存在，導至登入頁
+                {
+                    this.Session["UserLoginInfo"] = null;
+                    Response.Redirect("/Login.aspx");
+                    return;
+                }
+
+                this.ltAccount.Text = dr["Account"].ToString();
+                this.ltName.Text = dr["Name"].ToString();
+                this.ltEmail.Text = dr["Email"].ToString();
             }
-
-            string account = this.Session["UserLoginInfo"] as string;
-
-            DataRow dr = UserInfoManger.GetUserInfoByAccount(account);
-
-            if(dr == null)
-            {
-                this.Session["UserLoginInfo"] = null;
-                Response.Redirect("/Login.aspx");
-                return;
-            }
-
-            this.ltAccount.Text = dr["Account"].ToString();
-            this.ltName.Text = dr["Name"].ToString();
-            this.ltEmail.Text = dr["Email"].ToString();
         }
 
         protected void btnLogout_Click(object sender, EventArgs e)
