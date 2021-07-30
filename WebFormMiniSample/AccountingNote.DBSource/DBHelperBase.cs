@@ -1,4 +1,7 @@
-﻿namespace AccountingNote.DBSource
+﻿using System.Collections.Generic;
+using System.Data.SqlClient;
+
+namespace AccountingNote.DBSource
 {
     internal class DBHelperBase
     {
