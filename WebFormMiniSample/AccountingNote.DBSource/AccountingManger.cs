@@ -11,15 +11,9 @@ namespace AccountingNote.DBSource
 {
     public class AccountingManger
     {
-        private static string GetConnectionString()
-        {
-            string val = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            return val;
-        }
-
         public static DataTable GetAccountingList(string userID)
         {
-            string connStr = GetConnectionString();
+            string connStr = DBHelper.GetConnectionString();
             string dbCommand =
                 $@" SELECT 
                         ID,
@@ -58,7 +52,7 @@ namespace AccountingNote.DBSource
 
         public static DataRow GetAccounting(int id, string userID)
         {
-            string connStr = GetConnectionString();
+            string connStr = DBHelper.GetConnectionString();
             string dbCommand =
                 $@" SELECT 
                         ID,
@@ -119,7 +113,7 @@ namespace AccountingNote.DBSource
                 throw new ArgumentException("actType must be 0 or 1.");
             // <<<< check input >>>>
 
-            string connStr = GetConnectionString();
+            string connStr = DBHelper.GetConnectionString();
             string dbCommand =
                 $@"INSERT INTO [dbo].[Accounting]
                     (
@@ -186,7 +180,7 @@ namespace AccountingNote.DBSource
                 throw new ArgumentException("actType must be 0 or 1.");
             // <<<< check input >>>>
 
-            string connStr = GetConnectionString();
+            string connStr = DBHelper.GetConnectionString();
             string dbCommand =
                 $@" UPDATE [Accounting]
                     SET
@@ -238,7 +232,7 @@ namespace AccountingNote.DBSource
 
         public static void DeleteAccounting(int ID)
         {
-            string connStr = GetConnectionString();
+            string connStr = DBHelper.GetConnectionString();
             string dbCommand =
                 $@" DELETE [Accounting]
                     WHERE ID = @id ";

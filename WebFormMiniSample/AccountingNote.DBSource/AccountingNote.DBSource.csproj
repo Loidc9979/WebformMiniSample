@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountingManger.cs" />
+    <Compile Include="DBHelper.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="UserInfoManger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
