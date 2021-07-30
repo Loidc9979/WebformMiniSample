@@ -21,10 +21,12 @@ namespace AccountingNote.SystemAdmin
             }
 
             string account = this.Session["UserLoginInfo"] as string;
-            var drUserInfo = UserInfoManger.GetUserInfoByAccount(account);
+            var currentUser = AuthManger.GetCurrentUser();
 
-            if (drUserInfo == null)
+            if (currentUser == null)
+            // 如果帳號不存在，導至登入頁
             {
+                this.Session["UserLoginInfo"] = null;
                 Response.Redirect("/Login.aspx");
                 return;
             }
@@ -44,7 +46,7 @@ namespace AccountingNote.SystemAdmin
                     int id;
                     if (int.TryParse(idText, out id))
                     {
-                        var drAccounting = AccountingManger.GetAccounting(id, drUserInfo["ID"].ToString());
+                        var drAccounting = AccountingManger.GetAccounting(id, currentUser.ID);
 
                         if (drAccounting == null)
                         {

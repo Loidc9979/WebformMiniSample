@@ -24,11 +24,9 @@ namespace AccountingNote.SystemAdmin
                     return;
                 }
 
-                string account = this.Session["UserLoginInfo"] as string;
+                var currentUser = AuthManger.GetCurrentUser();
 
-                DataRow dr = UserInfoManger.GetUserInfoByAccount(account);
-
-                if (dr == null)
+                if (currentUser == null)
                 // 如果帳號不存在，導至登入頁
                 {
                     this.Session["UserLoginInfo"] = null;
@@ -36,9 +34,9 @@ namespace AccountingNote.SystemAdmin
                     return;
                 }
 
-                this.ltAccount.Text = dr["Account"].ToString();
-                this.ltName.Text = dr["Name"].ToString();
-                this.ltEmail.Text = dr["Email"].ToString();
+                this.ltAccount.Text = currentUser.Account;
+                this.ltName.Text = currentUser.Name;
+                this.ltEmail.Text = currentUser.Email;
             }
         }
 
