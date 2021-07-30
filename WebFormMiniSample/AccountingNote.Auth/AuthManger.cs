@@ -56,12 +56,55 @@ namespace AccountingNote.Auth
         }
 
         /// <summary>
-        /// 清除登入資訊，導至登入頁
+        /// 登出
         /// </summary>
         /// <returns></returns>        
         public static void Logout()
         {
             HttpContext.Current.Session["UserLoginInfo"] = null;
+        }
+
+        /// <summary>
+        /// 嘗試登入
+        /// </summary>
+        /// <param name="account"></param>
+        /// <param name="pwd"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns></returns>
+        public static bool TryLogin(string account, string pwd, out string errorMsg)
+        {
+            // check empty
+            if (string.IsNullOrWhiteSpace(account) || string.IsNullOrWhiteSpace(pwd))
+            {
+                errorMsg = "Account / PWD is required.";
+                return false;
+            }
+
+            // read db and check
+            var dr = UserInfoManger.GetUserInfoByAccount(account);
+
+            // check null
+            if (dr == null)
+            {
+                errorMsg = $"Account: {account} doesn't exists.";
+                return false;
+            }
+
+            // check account / pwd
+            if (string.Compare(dr["Account"].ToString(), account, true) == 0 &&
+               string.Compare(dr["PWD"].ToString(), pwd, false) == 0)
+            {
+                HttpContext.Current.Session["UserLoginInfo"] = dr["Account"].ToString();
+
+                errorMsg = string.Empty;
+                return true;
+            }
+            else
+            {
+                errorMsg = "Login fail. Please check Account / PWD.";
+                return false;
+            }
+
         }
     }
 }
