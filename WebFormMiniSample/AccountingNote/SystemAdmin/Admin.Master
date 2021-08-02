@@ -1,0 +1,39 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Admin.master.cs" Inherits="AccountingNote.SystemAdmin.Admin" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <table>
+                <tr>
+                    <td colspan="2">
+                        <h1>流水帳管理系統 - 後台</h1>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="UserInfo.aspx">使用者資訊</a>
+                        <br />
+                        <a href="AccountingList.aspx">流水帳管理</a>
+                        <br />
+                        <a href="#">會員管理</a>
+                    </td>
+                    <td>
+                        <!--這邊放主要內容-->
+                        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</body>
+</html>

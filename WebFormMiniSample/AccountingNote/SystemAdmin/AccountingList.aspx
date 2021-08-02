@@ -1,5 +1,8 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AccountingList.aspx.cs" Inherits="AccountingNote.SystemAdmin.AccountingList" %>
 
+<%@ Register Src="~/UserControls/ucPager.ascx" TagPrefix="uc1" TagName="ucPager" %>
+
+
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -46,6 +49,10 @@
                             </asp:TemplateField>
                         </Columns>
                     </asp:GridView>
+
+                    <asp:Literal runat="server" ID="ltPager"></asp:Literal>
+
+                    <uc1:ucpager runat="server" id="ucPager" PageSize="10" CurrentPage="1" TotalSize="10" Url="AccountingList.aspx"/>
 
                     <asp:PlaceHolder ID="plcNoData" runat="server" Visible="false">
                         <p style="color: aqua; background-color: orange">

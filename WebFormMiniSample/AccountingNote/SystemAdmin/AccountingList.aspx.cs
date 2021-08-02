@@ -17,7 +17,7 @@ namespace AccountingNote.SystemAdmin
         {
             // check is logined
             //if (this.Session["UserLoginInfo"] == null)
-            if(!AuthManger.IsLogined())
+            if (!AuthManger.IsLogined())
             {
                 Response.Redirect("/Login.aspx");
                 return;
@@ -36,17 +36,61 @@ namespace AccountingNote.SystemAdmin
             // read accounting data
             var dt = AccountingManger.GetAccountingList(currentUser.ID);
 
-            //if(dt.Rows.Count > 0)
-            //{
-            this.gvAccountingList.DataSource = dt;
-            this.gvAccountingList.DataBind();
-            //}
-            //else
-            //{
-            //    this.gvAccountingList.Visible = false;
-            //    this.plcNoData.Visible = true;
-            //}
+            if (dt.Rows.Count > 0)      // check is empty data
+            {
+                var dtPaged = this.GetPagedDataTable(dt);
 
+                this.gvAccountingList.DataSource = dtPaged;
+                this.gvAccountingList.DataBind();
+
+                this.ucPager.TotalSize = dt.Rows.Count;
+                this.ucPager.Bind();
+            }
+            else
+            {
+                this.gvAccountingList.Visible = false;
+                this.plcNoData.Visible = true;
+            }
+        }
+
+        private int GetCurrentPage()
+        {
+            string pageText = Request.QueryString["Page"];
+
+            if (string.IsNullOrWhiteSpace(pageText))
+                return 1;
+
+            int intPage;
+            if (!int.TryParse(pageText, out intPage))
+                return 1;
+
+            if (intPage <= 0)
+                return 1;
+
+            return intPage;
+        }
+
+        private DataTable GetPagedDataTable(DataTable dt)
+        {
+            DataTable dtPaged = dt.Clone();
+
+            int startIndex = (this.GetCurrentPage() - 1) * 10;
+            int endIndex = (this.GetCurrentPage()) * 10;
+            if (endIndex > dt.Rows.Count)
+                endIndex = dt.Rows.Count;
+
+            for (var i = startIndex; i < endIndex; i++)
+            {
+                DataRow dr = dt.Rows[i];
+                var drNew = dtPaged.NewRow();
+
+                foreach (DataColumn dc in dt.Columns)
+                {
+                    drNew[dc.ColumnName] = dr[dc];
+                }
+                dtPaged.Rows.Add(drNew);
+            }
+            return dtPaged;
         }
 
         protected void btnCreate_Click(object sender, EventArgs e)
@@ -78,7 +122,7 @@ namespace AccountingNote.SystemAdmin
                     lbl.Text = "收入";
                 }
 
-                if(dr.Row.Field<int>("Amount") > 1500)
+                if (dr.Row.Field<int>("Amount") > 1500)
                 {
                     lbl.ForeColor = Color.Red;
                 }
