@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data;
+using AccountingNote.ORM.DBModels;
 
 namespace AccountingNote.Handlers
 {
@@ -76,25 +77,20 @@ namespace AccountingNote.Handlers
             }
             else if (actionName == "list")
             {
-                string userID = "CB1F7A59-A960-417D-A2CE-49F34AA9DBD7";
+                Guid userGUID = new Guid("CB1F7A59-A960-417D-A2CE-49F34AA9DBD7");
 
-                DataTable datatable = AccountingManger.GetAccountingList(userID);
-
-
-                List<AccountingNoteViewModel> list = new List<AccountingNoteViewModel>();
-                foreach (DataRow drAccounting in datatable.Rows)
+                List<Accounting> sourceList = AccountingManger.GetAccountingList(userGUID);
+                List<AccountingNoteViewModel> list =
+                sourceList.Select(obj => new AccountingNoteViewModel()
                 {
-                    AccountingNoteViewModel model = new AccountingNoteViewModel()
-                    {
-                        ID = drAccounting["ID"].ToString(),
-                        Caption = drAccounting["Caption"].ToString(),
-                        Amount = drAccounting.Field<int>("Amount"),
-                        ActType = (drAccounting.Field<int>("ActType") == 0) ? "支出" : "收入",
-                        CreateDate = drAccounting.Field<DateTime>("CreateDate").ToString("yyyy-MM-dd")
-                    };
-                }
+                    ID = obj.ID,
+                    Caption = obj.Caption,
+                    Amount = obj.Amount,
+                    ActType = (obj.ActType == 0) ? "支出" : "收入",
+                    CreateDate = obj.CreateDate.ToString("yyyy-MM-dd")
+                }).ToList();
 
-                string jsonText = Newtonsoft.Json.JsonConvert.SerializeObject(datatable);
+                string jsonText = Newtonsoft.Json.JsonConvert.SerializeObject(list);
 
                 context.Response.ContentType = "application/json";
                 context.Response.Write(jsonText);
@@ -104,11 +100,11 @@ namespace AccountingNote.Handlers
                 string idText = context.Request.Form["ID"];
                 int id;
                 int.TryParse(idText, out id);
-                string userID = "CB1F7A59-A960-417D-A2CE-49F34AA9DBD7";
+                Guid userGUID = new Guid("CB1F7A59-A960-417D-A2CE-49F34AA9DBD7");
 
-                var drAccounting = AccountingManger.GetAccounting(id, userID);
+                var accounting = AccountingManger.GetAccounting(id, userGUID);
 
-                if (drAccounting == null)
+                if (accounting == null)
                 {
                     context.Response.StatusCode = 404;
                     context.Response.ContentType = "text/plain";
@@ -118,12 +114,12 @@ namespace AccountingNote.Handlers
 
                 AccountingNoteViewModel model = new AccountingNoteViewModel()
                 {
-                    ID = drAccounting["ID"].ToString(),
-                    Caption = drAccounting["Caption"].ToString(),
-                    Body = drAccounting["Body"].ToString(),
-                    CreateDate = drAccounting.Field<DateTime>("CreateDate").ToString("yyyy-MM-dd"),
-                    ActType = drAccounting.Field<int>("ActType").ToString(),
-                    Amount = drAccounting.Field<int>("Amount")
+                    ID = accounting.ID,
+                    Caption = accounting.Caption,
+                    Body = accounting.Body,
+                    Amount = accounting.Amount,
+                    ActType = (accounting.ActType == 0) ? "支出" : "收入",
+                    CreateDate = accounting.CreateDate.ToString("yyyy-MM-dd")
                 };
 
                 string jsonText = Newtonsoft.Json.JsonConvert.SerializeObject(model);

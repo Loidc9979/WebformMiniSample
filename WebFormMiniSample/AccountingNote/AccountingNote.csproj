@@ -206,10 +206,6 @@
       <Project>{361cf31f-ca9b-4c6f-a934-2eb0848c62fa}</Project>
       <Name>AccountingNote.ORM</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DBClasses\DBClasses.csproj">
-      <Project>{15AA9B8B-13F7-48BB-BE67-2C8E3B25D8DE}</Project>
-      <Name>DBClasses</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

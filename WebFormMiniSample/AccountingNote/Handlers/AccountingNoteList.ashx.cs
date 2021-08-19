@@ -56,8 +56,7 @@ namespace AccountingNote.Handlers
             List<AccountingNoteViewModel> list =
                 sourceList.Select(obj => new AccountingNoteViewModel()
                 {
-
-                    ID = obj.ID.ToString(),
+                    ID = obj.ID,
                     Caption = obj.Caption,
                     Amount = obj.Amount,
                     ActType = (obj.ActType == 0) ? "支出" : "收入",

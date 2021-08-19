@@ -45,6 +45,11 @@ namespace AccountingNote.DBSource
             }
         }
 
+        /// <summary>
+        /// 查詢流水帳清單
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
         public static List<Accounting> GetAccountingList(Guid userID)
         {
             try
@@ -93,6 +98,33 @@ namespace AccountingNote.DBSource
             try
             {
                 return DBHelper.ReadDataRow(connStr, dbCommand, list);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 查詢流水帳
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public static Accounting GetAccounting(int id, Guid userID)
+        {
+            try
+            {
+                using (ContextModel context = new ContextModel())
+                {
+                    var query =
+                        (from item in context.Accountings
+                         where item.ID ==id && item.UserID == userID
+                         select item);
+
+                    var obj = query.FirstOrDefault();
+                    return obj;
+                }
             }
             catch (Exception ex)
             {
