@@ -11,6 +11,11 @@ namespace AccountingNote.DBSource
 {
     public class AccountingManger
     {
+        /// <summary>
+        /// 查詢流水帳清單
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
         public static DataTable GetAccountingList(string userID)
         {
             string connStr = DBHelper.GetConnectionString();
@@ -39,6 +44,11 @@ namespace AccountingNote.DBSource
             }
         }
 
+        /// <summary>
+        /// 查詢流水帳
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
         public static DataRow GetAccounting(int id, string userID)
         {
             string connStr = DBHelper.GetConnectionString();
@@ -87,26 +97,34 @@ namespace AccountingNote.DBSource
                 throw new ArgumentException("actType must be 0 or 1.");
             // <<<< check input >>>>
 
+            string bodyColumnSQL = "";
+            string bodyValueSQL = "";
+            if (!string.IsNullOrWhiteSpace(body))
+            {
+                bodyColumnSQL = ", Body";
+                bodyValueSQL = ", @Body";
+            }
+
             string connStr = DBHelper.GetConnectionString();
             string dbCommand =
-                $@"INSERT INTO [dbo].[Accounting]
-                    (
-                        UserID
-                        ,Caption
-                        ,Amount
-                        ,ActType
-                        ,CreateDate
-                        ,Body
-                    )
-                    VALUES
-                    (
-                        @userID
-                        ,@caption
-                        ,@amount
-                        ,@acttype
-                        ,@createdate
-                        ,@body
-                    )";
+            $@" INSERT INTO [dbo].[Accounting]
+                (
+                    UserID
+                    ,Caption
+                    ,Amount
+                    ,ActType
+                    ,CreateDate
+                    {bodyColumnSQL}
+                )
+                VALUES
+                (
+                    @userID
+                    ,@caption
+                    ,@amount
+                    ,@actType
+                    ,@createDate
+                    {bodyValueSQL}
+                )";
 
             // connect db & execute
             using (SqlConnection conn = new SqlConnection(connStr))
@@ -116,9 +134,11 @@ namespace AccountingNote.DBSource
                     comm.Parameters.AddWithValue("@userID", userID);
                     comm.Parameters.AddWithValue("@caption", caption);
                     comm.Parameters.AddWithValue("@amount", amount);
-                    comm.Parameters.AddWithValue("@acttype", actType);
-                    comm.Parameters.AddWithValue("@createdate", DateTime.Now);
-                    comm.Parameters.AddWithValue("@body", body);
+                    comm.Parameters.AddWithValue("@actType", actType);
+                    comm.Parameters.AddWithValue("@createDate", DateTime.Now);
+
+                    if (!string.IsNullOrWhiteSpace(body))
+                        comm.Parameters.AddWithValue("@body", body);
 
                     try
                     {
@@ -132,7 +152,6 @@ namespace AccountingNote.DBSource
                 }
             }
         }
-
 
         /// <summary>
         /// 變更流水帳
@@ -197,7 +216,6 @@ namespace AccountingNote.DBSource
         /// 刪除流水帳
         /// </summary>
         /// <param name="ID"></param>
-
         public static void DeleteAccounting(int ID)
         {
             string connStr = DBHelper.GetConnectionString();

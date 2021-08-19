@@ -7,12 +7,12 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{24DE895D-5277-44D3-8D0E-DFE90E083830}</ProjectGuid>
+    <ProjectGuid>{EC6C0CEB-7800-4D04-906E-59C9F2FA6F0A}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AccountingNote</RootNamespace>
-    <AssemblyName>AccountingNote</AssemblyName>
+    <RootNamespace>WebApplication2</RootNamespace>
+    <AssemblyName>WebApplication2</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -56,6 +56,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -70,34 +71,31 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="About.aspx" />
-    <Content Include="AjaxAccountingNote.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
-    <Content Include="Images\search.png" />
-    <Content Include="Login.aspx" />
-    <Content Include="SystemAdmin\AccountingDetail.aspx" />
-    <Content Include="SystemAdmin\AccountingList.aspx" />
-    <Content Include="SystemAdmin\UserInfo.aspx" />
-    <Content Include="UserControls\ucPager.ascx" />
-    <Content Include="UserControls\ucPager2.ascx" />
+    <Content Include="Scripts\jQuery-min-3.6.js" />
+    <Content Include="Scripts\WebForm1.js" />
+    <Content Include="TryAjax.aspx" />
+    <Content Include="TryJquery.aspx" />
+    <Content Include="TryJquery2.aspx" />
+    <Content Include="WeatherData.aspx" />
     <Content Include="Web.config" />
+    <Content Include="WebForm1.aspx" />
+    <Content Include="WebForm2.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="About.aspx.cs">
-      <DependentUpon>About.aspx</DependentUpon>
+    <Compile Include="TryAjax.aspx.cs">
+      <DependentUpon>TryAjax.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="About.aspx.designer.cs">
-      <DependentUpon>About.aspx</DependentUpon>
+    <Compile Include="TryAjax.aspx.designer.cs">
+      <DependentUpon>TryAjax.aspx</DependentUpon>
     </Compile>
-    <Compile Include="AjaxAccountingNote.aspx.cs">
-      <DependentUpon>AjaxAccountingNote.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
+    <Compile Include="WeatherDataHandler.ashx.cs">
+      <DependentUpon>WeatherDataHandler.ashx</DependentUpon>
     </Compile>
-    <Compile Include="AjaxAccountingNote.aspx.designer.cs">
-      <DependentUpon>AjaxAccountingNote.aspx</DependentUpon>
-    </Compile>
+    <Compile Include="WeatherDataModel.cs" />
+    <Compile Include="WeatherDataReader.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -108,73 +106,46 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Handlers\AccountingNoteHandler.ashx.cs">
-      <DependentUpon>AccountingNoteHandler.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="Handlers\AccountingNoteList.ashx.cs">
-      <DependentUpon>AccountingNoteList.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="Handlers\CreateAccountingNote.ashx.cs">
-      <DependentUpon>CreateAccountingNote.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="Login.aspx.cs">
-      <DependentUpon>Login.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Login.aspx.designer.cs">
-      <DependentUpon>Login.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\AccountingNoteViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SystemAdmin\AccountingDetail.aspx.cs">
-      <DependentUpon>AccountingDetail.aspx</DependentUpon>
+    <Compile Include="TryJquery.aspx.cs">
+      <DependentUpon>TryJquery.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="SystemAdmin\AccountingDetail.aspx.designer.cs">
-      <DependentUpon>AccountingDetail.aspx</DependentUpon>
+    <Compile Include="TryJquery.aspx.designer.cs">
+      <DependentUpon>TryJquery.aspx</DependentUpon>
     </Compile>
-    <Compile Include="SystemAdmin\AccountingList.aspx.cs">
-      <DependentUpon>AccountingList.aspx</DependentUpon>
+    <Compile Include="TryJquery2.aspx.cs">
+      <DependentUpon>TryJquery2.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="SystemAdmin\AccountingList.aspx.designer.cs">
-      <DependentUpon>AccountingList.aspx</DependentUpon>
+    <Compile Include="TryJquery2.aspx.designer.cs">
+      <DependentUpon>TryJquery2.aspx</DependentUpon>
     </Compile>
-    <Compile Include="SystemAdmin\Admin.Master.cs">
-      <DependentUpon>Admin.Master</DependentUpon>
+    <Compile Include="WeatherData.aspx.cs">
+      <DependentUpon>WeatherData.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="SystemAdmin\Admin.Master.designer.cs">
-      <DependentUpon>Admin.Master</DependentUpon>
+    <Compile Include="WeatherData.aspx.designer.cs">
+      <DependentUpon>WeatherData.aspx</DependentUpon>
     </Compile>
-    <Compile Include="SystemAdmin\UserInfo.aspx.cs">
-      <DependentUpon>UserInfo.aspx</DependentUpon>
+    <Compile Include="WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="SystemAdmin\UserInfo.aspx.designer.cs">
-      <DependentUpon>UserInfo.aspx</DependentUpon>
+    <Compile Include="WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ucPager.ascx.cs">
-      <DependentUpon>ucPager.ascx</DependentUpon>
+    <Compile Include="WebForm2.aspx.cs">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="UserControls\ucPager.ascx.designer.cs">
-      <DependentUpon>ucPager.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\ucPager2.ascx.cs">
-      <DependentUpon>ucPager2.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserControls\ucPager2.ascx.designer.cs">
-      <DependentUpon>ucPager2.ascx</DependentUpon>
+    <Compile Include="WebForm2.aspx.designer.cs">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Handlers\AccountingNoteList.ashx" />
-    <Content Include="Handlers\CreateAccountingNote.ashx" />
-    <Content Include="Handlers\AccountingNoteHandler.ashx" />
     <None Include="packages.config" />
-    <Content Include="SystemAdmin\Admin.Master" />
+    <Content Include="WeatherDataHandler.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -184,20 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AccountingNote.Auth\AccountingNote.Auth.csproj">
-      <Project>{2e9c8026-854a-41e5-85ad-2179b33bb75a}</Project>
-      <Name>AccountingNote.Auth</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AccountingNote.DBSource\AccountingNote.DBSource.csproj">
-      <Project>{04416825-4f63-4583-86c8-104dc14577b6}</Project>
-      <Name>AccountingNote.DBSource</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DBClasses\DBClasses.csproj">
-      <Project>{15AA9B8B-13F7-48BB-BE67-2C8E3B25D8DE}</Project>
-      <Name>DBClasses</Name>
-    </ProjectReference>
+    <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -212,9 +170,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>1952</DevelopmentServerPort>
+          <DevelopmentServerPort>2980</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:1952/</IISUrl>
+          <IISUrl>http://localhost:2980/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

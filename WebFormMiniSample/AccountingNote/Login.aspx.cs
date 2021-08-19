@@ -30,7 +30,7 @@ namespace AccountingNote
             string inp_PWD = this.txtPWD.Text;
 
             string msg;
-            if (!AuthManger.TryLogin(inp_Account,inp_PWD,out msg))
+            if (!AuthManger.TryLogin(inp_Account, inp_PWD, out msg))
             {
                 this.ltlMsg.Text = "Account / PWD is required.";
                 return;
