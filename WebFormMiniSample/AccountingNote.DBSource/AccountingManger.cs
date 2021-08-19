@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AccountingNote.ORM.DBModels;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -36,6 +37,28 @@ namespace AccountingNote.DBSource
             try
             {
                 return DBHelper.ReadDataTable(connStr, dbCommand, list);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog(ex);
+                return null;
+            }
+        }
+
+        public static List<Accounting> GetAccountingList(Guid userID)
+        {
+            try
+            {
+                using (ContextModel context = new ContextModel())
+                {
+                    var query =
+                        (from item in context.Accountings
+                         where item.UserID == userID
+                         select item);
+
+                    var list = query.ToList();
+                    return list;
+                }
             }
             catch (Exception ex)
             {

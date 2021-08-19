@@ -1,5 +1,6 @@
 ﻿using AccountingNote.Auth;
 using AccountingNote.DBSource;
+using AccountingNote.ORM.DBModels;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -34,18 +35,39 @@ namespace AccountingNote.SystemAdmin
             }
 
             // read accounting data
-            var dt = AccountingManger.GetAccountingList(currentUser.ID);
+            //var dt = AccountingManger.GetAccountingList(currentUser.ID);
+            var list = AccountingManger.GetAccountingList(currentUser.UserGuid);
 
-            if (dt.Rows.Count > 0)      // check is empty data
+            //if (dt.Rows.Count > 0)      // check is empty data
+            //{
+            //    var dtPaged = this.GetPagedDataTable(dt);
+
+            //    this.ucPager2.TotalSize = dt.Rows.Count;
+            //    this.ucPager2.Bind();
+
+            //    this.gvAccountingList.DataSource = dtPaged;
+            //    this.gvAccountingList.DataBind();
+
+            //}
+            //else
+            //{
+            //    this.gvAccountingList.Visible = false;
+            //    this.plcNoData.Visible = true;
+            //}
+
+            if (list.Count > 0)      // check is empty data
             {
-                var dtPaged = this.GetPagedDataTable(dt);
+                //var dtPaged = this.GetPagedDataTable(list);
 
-                this.ucPager2.TotalSize = dt.Rows.Count;
-                this.ucPager2.Bind();
+                //this.gvAccountingList.DataSource = dtPaged;
 
-                this.gvAccountingList.DataSource = dtPaged;
+                var pagedList = this.GetPagedDataTable(list);
+                this.gvAccountingList.DataSource = pagedList;
                 this.gvAccountingList.DataBind();
 
+                //this.ucPager2.TotalSize = list.Rows.Count;
+                this.ucPager2.TotalSize = list.Count;
+                this.ucPager2.Bind();
             }
             else
             {
@@ -69,6 +91,13 @@ namespace AccountingNote.SystemAdmin
                 return 1;
 
             return intPage;
+        }
+
+        private List<Accounting> GetPagedDataTable(List<Accounting> list)
+        {
+            int pageSize = this.ucPager2.PageSize;
+            int startIndex = (this.GetCurrentPage() - 1) * pageSize;
+            return list.Skip(startIndex).Take(pageSize).ToList();
         }
 
         private DataTable GetPagedDataTable(DataTable dt)
@@ -110,8 +139,10 @@ namespace AccountingNote.SystemAdmin
                 Label lbl = row.FindControl("lblActType") as Label;
                 //ltl.Text = "OK";
 
-                var dr = row.DataItem as DataRowView;
-                int actType = dr.Row.Field<int>("ActType");
+                //var dr = row.DataItem as DataRowView;
+                //int actType = dr.Row.Field<int>("ActType");
+                var rowData = row.DataItem as Accounting;
+                int actType = rowData.ActType;
 
                 if (actType == 0)
                 {
@@ -124,7 +155,7 @@ namespace AccountingNote.SystemAdmin
                     lbl.Text = "收入";
                 }
 
-                if (dr.Row.Field<int>("Amount") > 1500)
+                if (rowData.Amount > 1500)
                 {
                     lbl.ForeColor = Color.Red;
                 }
