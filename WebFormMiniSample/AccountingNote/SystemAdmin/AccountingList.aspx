@@ -54,7 +54,7 @@
                     <asp:Literal runat="server" ID="ltPager"></asp:Literal>
 
                     <div>
-                    <uc1:ucPager2 runat="server" id="ucPager2" PageSize="3" Url="/SystemAdmin/AccountingList.aspx"/>
+                    <uc1:ucPager2 runat="server" id="ucPager2" PageSize="5" Url="/SystemAdmin/AccountingList.aspx"/>
                     </div>
 
                     <asp:PlaceHolder ID="plcNoData" runat="server" Visible="false">
